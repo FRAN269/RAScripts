@@ -1,6 +1,5 @@
 // LEGO Indiana Jones: The Original Adventures
 // #ID = 20675
-//
 // third script, wahoo!
 // i got better between the last two hopefully this is readable 
 // for whoever is reading this in the future
@@ -9,6 +8,50 @@
 
 // Save Protection
 SaveProtection= dword(0x00496568)!=0xffffffff
+// Cheat Protection
+Extras = [
+    0x0048682c,
+    0x00486844,
+    0x0048685c,
+    0x00486874,
+    0x0048688c,
+    0x004868a4,
+    0x004868bc,
+    0x004868d4,
+    0x004868ec,
+    0x00486904,
+    0x0048691c,
+    0x00486934,
+    0x0048694c,
+    0x00486964,
+    0x0048697c,
+    0x00486994,
+    0x004869ac,
+    0x004869c4,
+]
+function EXTRAS(Extras)
+{
+    return sum_of(Extras,f => byte(f)) >= 1
+}
+// Level ID 
+Level1=dword(0x00496568)!=1
+Level2=dword(0x00496568)!=2
+Level3=dword(0x00496568)!=3
+Level4=dword(0x00496568)!=4
+Level5=dword(0x00496568)!=5
+Level6=dword(0x00496568)!=6
+Level7=dword(0x00496568)!=7
+Level8=dword(0x00496568)!=8
+Level9=dword(0x00496568)!=9
+Level10=dword(0x00496568)!=10
+Level11=dword(0x00496568)!=11
+Level12=dword(0x00496568)!=12
+Level13=dword(0x00496568)!=13
+Level14=dword(0x00496568)!=14
+Level15=dword(0x00496568)!=15
+Level16=dword(0x00496568)!=16
+Level17=dword(0x00496568)!=17
+Level18=dword(0x00496568)!=18
 
 // Free Play Flags AKA what i'm gonna use for regular progression achievements
 // Variables
@@ -365,33 +408,35 @@ Chewbaca=     bit2(0x004f705c)
 R2D2=         bit3(0x004f705c)
 PrincessLeia= bit4(0x004f705c)
 // Progression Achievements
-function PROGRESSION(UniqueTitle,MissionTitle,MissionFlag)
+function PROGRESSION(UniqueTitle,MissionTitle,MissionFlag,LevelID,cheevoid)
 {
     achievement(
         title=UniqueTitle,
-        description="Complete the mission: " + MissionTitle ,
+        description="Complete the mission: " + MissionTitle + "(No Red Extras Allowed)" ,
         points=5,
-        trigger=SaveProtection && prev(byte(MissionFlag))==0 && byte(MissionFlag)==1
+        id= cheevoid,
+        trigger=prev(byte(MissionFlag))==0 && byte(MissionFlag)==1
+        && disable_when(EXTRAS(Extras), until=LevelID)
     )
 }
-PROGRESSION("The Classic",            "\"The Lost Temple\"",         Mission1)
-PROGRESSION("Take a Hike",            "\"Into the Mountains\"",      Mission2)
-PROGRESSION("Danger Zone",            "\"City of Danger\"",          Mission3)
-PROGRESSION("Bonfire Ahead",          "\"Well of Souls\"",           Mission4)
-PROGRESSION("Exclamation Ark",        "\"Pursuing the Ark\"",        Mission5)
-PROGRESSION("Juice Reward",           "\"Opening the Ark\"",         Mission6)
-PROGRESSION("Parasite",               "\"Shanghai Showdown\"",       Mission7)
-PROGRESSION("Don't Tell",             "\"Pankot Secrets\"",          Mission8)
-PROGRESSION("Kali Uchis' Temple",     "\"The Temple of Kali\"",      Mission9)
-PROGRESSION("Django",                 "\"Free the Slaves\"",         Mission10)
-PROGRESSION("Creeper! Oh Man!",       "\"Escape the Mines\"",        Mission11)
-PROGRESSION("Tai Lung",               "\"Battle on the Bridge\"",    Mission12)
-PROGRESSION("Where's Waldo?",         "\"The Hunt for Sir Richard\"",Mission13)
-PROGRESSION("It's a-me! Indy!",       "\"Castle Rescue\"",           Mission14)
-PROGRESSION("Mad Max",                "\"Motorcycle Escape\"",       Mission15)
-PROGRESSION("To Infinity and Beyond!","\"Trouble in the Sky\"",      Mission16)
-PROGRESSION("Dunes",                  "\"Desert Ambush\"",           Mission17)
-PROGRESSION("One Last Job",           "\"Temple of the Grail\"",     Mission18)
+PROGRESSION("The Classic",            "\"The Lost Temple\"",         Mission1,Level1,280214)
+PROGRESSION("Take a Hike",            "\"Into the Mountains\"",      Mission2,Level2,280215)
+PROGRESSION("Danger Zone",            "\"City of Danger\"",          Mission3,Level3,280216)
+PROGRESSION("Bonfire Ahead",          "\"Well of Souls\"",           Mission4,Level4,280217)
+PROGRESSION("Exclamation Ark",        "\"Pursuing the Ark\"",        Mission5,Level5,280218)
+PROGRESSION("Juice Reward",           "\"Opening the Ark\"",         Mission6,Level6,280219)
+PROGRESSION("Parasite",               "\"Shanghai Showdown\"",       Mission7,Level7,280220)
+PROGRESSION("Don't Tell",             "\"Pankot Secrets\"",          Mission8,Level8,280221)
+PROGRESSION("Kali Uchis' Temple",     "\"The Temple of Kali\"",      Mission9,Level9,280222)
+PROGRESSION("Django",                 "\"Free the Slaves\"",         Mission10,Level10,280223)
+PROGRESSION("Creeper! Oh Man!",       "\"Escape the Mines\"",        Mission11,Level11,280224)
+PROGRESSION("Tai Lung",               "\"Battle on the Bridge\"",    Mission12,Level12,280225)
+PROGRESSION("Where's Waldo?",         "\"The Hunt for Sir Richard\"",Mission13,Level13,280226)
+PROGRESSION("It's a-me! Indy!",       "\"Castle Rescue\"",           Mission14,Level14,280227)
+PROGRESSION("Mad Max",                "\"Motorcycle Escape\"",       Mission15,Level15,280228)
+PROGRESSION("To Infinity and Beyond!","\"Trouble in the Sky\"",      Mission16,Level16,280229)
+PROGRESSION("Dunes",                  "\"Desert Ambush\"",           Mission17,Level17,280230)
+PROGRESSION("One Last Job",           "\"Temple of the Grail\"",     Mission18,Level18,280231)
 function PROGRESSION_special(UniqueTitle,MissionTitle,MissionFlag)
 {
     achievement(
