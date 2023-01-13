@@ -1,5 +1,6 @@
 // LEGO Indiana Jones: The Original Adventures
 // #ID = 20675
+//
 // third script, wahoo!
 // i got better between the last two hopefully this is readable 
 // for whoever is reading this in the future
