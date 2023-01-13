@@ -1,6 +1,6 @@
 // LEGO Batman: The Videogame
 // #ID = 19026
-////
+
 //yo, second script, DON'T LAUGH
 
 //Serial Numbers
@@ -29,7 +29,9 @@ function JP() => JP_SERIAL
 US_SaveProtection = dword(0x4afad4)!=0xffffffff
 JP_SaveProtection = dword(0x4b0104)!=0xffffffff
 
-
+// Level ID
+LevelID=dword(0x4afad4)
+LevelIDJP=dword(0x4b0104)
 OFFSET = 0x800
 
 // Extras [8-bit] [0x00/0x01]
@@ -55,6 +57,33 @@ InmuneToFreezeEX =      0x004a2b9c
 RegenerateHeartsEX =    0x004a2bb8
 ExtraHeartsEX =         0x004a2bd4
 InvincibilityEX =       0x004a2bf0
+
+Extras = [
+ScoreX2EX, 
+ScoreX4EX, 
+ScoreX6EX, 
+ScoreX8EX, 
+ScoreX10EX, 
+StudMagnetEX, 
+CharacterStudsEX, 
+MinikitDetectorEX,
+PowerBrickDetectorEX, 
+AlwaysScoreMultiplyEX, 
+FastBuildEX, 
+InmuneToFreezeEX,
+RegenerateHeartsEX, 
+ExtraHeartsEX, 
+InvincibilityEX,    
+]
+function EXTRAS(Extras)
+{
+    return sum_of(Extras,f => byte(f)) >= 1
+}
+function EXTRASJP(Extras)
+{
+    return sum_of(Extras,f => byte(f+0x600)) >= 1
+}
+
 
 // Suit Upgrades [8-bit] [0x00/0x01]
 // Variables
@@ -528,60 +557,60 @@ Third8 = 0x0061d512
 Last1 = 0x0061d513
 // Progression Achievements
 
-function PROGRESSIONACHIEVEMENTS(UniqueTitle,MissionName,MissionFlag,idnumber)
+function PROGRESSIONACHIEVEMENTS(UniqueTitle,MissionName,MissionFlag,idnumber,levelnumber)
 {
 achievement(
     title = UniqueTitle,
-    description = "Complete the " + MissionName + " level.",
+    description = "Complete the " + MissionName + " level. (No Extras)",
     points = 3,
     id= idnumber,
-    trigger = US() && US_SaveProtection && prev(byte(MissionFlag))==0 && byte(MissionFlag)==1 || 
-              EU() && US_SaveProtection && prev(byte(MissionFlag))==0 && byte(MissionFlag)==1 ||
-              JP() && JP_SaveProtection && prev(byte(MissionFlag + OFFSET))==0 &&byte(MissionFlag + OFFSET)==1
+    trigger = US() && disable_when(EXTRAS(Extras), until=LevelID!=levelnumber) && prev(byte(MissionFlag))==0 && byte(MissionFlag)==1 || 
+              EU() && disable_when(EXTRAS(Extras), until=LevelID!=levelnumber) && prev(byte(MissionFlag))==0 && byte(MissionFlag)==1 ||
+              JP() && disable_when(EXTRASJP(Extras), until=LevelIDJP!=levelnumber) && prev(byte(MissionFlag + OFFSET))==0 &&byte(MissionFlag + OFFSET)==1
 )
 }
 
 // Episode 1 (Heroes) - The Riddler's Revenge
-PROGRESSIONACHIEVEMENTS("Underneath the Bridge...",   "\"You Can Bank on Batman\"",     EP1HeroesMissionAFreePlay,278930)
-PROGRESSIONACHIEVEMENTS("Ice Ice Baby!",   "\"An Icy Reception\"",                      EP1HeroesMissionBFreePlay,278931)
-PROGRESSIONACHIEVEMENTS("Real Friends",   "\"Two-Face Chase\"",                         EP1HeroesMissionCFreePlay,278932)
-PROGRESSIONACHIEVEMENTS("Toxic",   "\"A Poisonous Appointment\"",                       EP1HeroesMissionDFreePlay,278933)
-PROGRESSIONACHIEVEMENTS("Mask Off",   "\"The Face-Off\"",                               EP1HeroesMissionEFreePlay,278934)
+PROGRESSIONACHIEVEMENTS("Underneath the Bridge...",   "\"You Can Bank on Batman\"",     EP1HeroesMissionAFreePlay,278930,3)
+PROGRESSIONACHIEVEMENTS("Ice Ice Baby!",   "\"An Icy Reception\"",                      EP1HeroesMissionBFreePlay,278931,4)
+PROGRESSIONACHIEVEMENTS("Real Friends",   "\"Two-Face Chase\"",                         EP1HeroesMissionCFreePlay,278932,5)
+PROGRESSIONACHIEVEMENTS("Toxic",   "\"A Poisonous Appointment\"",                       EP1HeroesMissionDFreePlay,278933,6)
+PROGRESSIONACHIEVEMENTS("Mask Off",   "\"The Face-Off\"",                               EP1HeroesMissionEFreePlay,278934,7)
 
 // Episode 2 (Heroes) - Power Crazed Penguin
-PROGRESSIONACHIEVEMENTS("The Way Life Goes",   "\"There She Goes Again\"",              EP2HeroesMissionFFreePlay,278935)
-PROGRESSIONACHIEVEMENTS("Little Yacht",   "\"Batboat Battle\"",                         EP2HeroesMissionGFreePlay,278936)
-PROGRESSIONACHIEVEMENTS("Underground",   "\"Under the City\"",                          EP2HeroesMissionHFreePlay,278937)
-PROGRESSIONACHIEVEMENTS("Animal Planet",   "\"Zoo's Company\"",                         EP2HeroesMissionIFreePlay,278938)
-PROGRESSIONACHIEVEMENTS("Noot Noot!",   "\"Penguin's Lair\"",                           EP2HeroesMissionJFreePlay,278939)
+PROGRESSIONACHIEVEMENTS("The Way Life Goes",   "\"There She Goes Again\"",              EP2HeroesMissionFFreePlay,278935,10)
+PROGRESSIONACHIEVEMENTS("Little Yacht",   "\"Batboat Battle\"",                         EP2HeroesMissionGFreePlay,278936,11)
+PROGRESSIONACHIEVEMENTS("Underground",   "\"Under the City\"",                          EP2HeroesMissionHFreePlay,278937,12)
+PROGRESSIONACHIEVEMENTS("Animal Planet",   "\"Zoo's Company\"",                         EP2HeroesMissionIFreePlay,278938,13)
+PROGRESSIONACHIEVEMENTS("Noot Noot!",   "\"Penguin's Lair\"",                           EP2HeroesMissionJFreePlay,278939,14)
 
 // Episode 3 (Heroes) - The Joker's Return
-PROGRESSIONACHIEVEMENTS("Gotham City",   "\"Joker's Home Turf\"",                       EP3HeroesMissionKFreePlay,278940)
-PROGRESSIONACHIEVEMENTS("Acrobatic Action",   "\"Little Fun at the Big Top\"",          EP3HeroesMissionLFreePlay,278941)
-PROGRESSIONACHIEVEMENTS("Top Maverick",   "\"Flight of the Bat\"",                      EP3HeroesMissionMFreePlay,278942)
-PROGRESSIONACHIEVEMENTS("Vengeance",   "\"In the Dark Night\"",                         EP3HeroesMissionNFreePlay,278943)
-PROGRESSIONACHIEVEMENTS("Started From the Bottom",   "\"To the Top of the Tower\"",     EP3HeroesMissionOFreePlay,278944)
+PROGRESSIONACHIEVEMENTS("Gotham City",   "\"Joker's Home Turf\"",                       EP3HeroesMissionKFreePlay,278940,17)
+PROGRESSIONACHIEVEMENTS("Acrobatic Action",   "\"Little Fun at the Big Top\"",          EP3HeroesMissionLFreePlay,278941,18)
+PROGRESSIONACHIEVEMENTS("Top Maverick",   "\"Flight of the Bat\"",                      EP3HeroesMissionMFreePlay,278942,19)
+PROGRESSIONACHIEVEMENTS("Vengeance",   "\"In the Dark Night\"",                         EP3HeroesMissionNFreePlay,278943,20)
+PROGRESSIONACHIEVEMENTS("Started From the Bottom",   "\"To the Top of the Tower\"",     EP3HeroesMissionOFreePlay,278944,21)
 
 // Episode 1 (Villains) - The Riddler's Revenge
-PROGRESSIONACHIEVEMENTS("Riddle Me This",   "\"The Riddler Makes a Withdrawal\"",       EP1VillainsMissionAFreePlay,278945)
-PROGRESSIONACHIEVEMENTS("Diamonds Dancing",   "\"On the Rocks\"",                       EP1VillainsMissionBFreePlay,278946)
-PROGRESSIONACHIEVEMENTS("Ew, What?",   "\"Green Fingers\"",                             EP1VillainsMissionCFreePlay,278947)
-PROGRESSIONACHIEVEMENTS("Gangster Paradise",   "\"An Enterprising Theft\"",             EP1VillainsMissionDFreePlay,278948)
-PROGRESSIONACHIEVEMENTS("Blocked",   "\"Breaking Blocks\"",                             EP1VillainsMissionEFreePlay,278949)
+PROGRESSIONACHIEVEMENTS("Riddle Me This",   "\"The Riddler Makes a Withdrawal\"",       EP1VillainsMissionAFreePlay,278945,23)
+PROGRESSIONACHIEVEMENTS("Diamonds Dancing",   "\"On the Rocks\"",                       EP1VillainsMissionBFreePlay,278946,24)
+PROGRESSIONACHIEVEMENTS("Ew, What?",   "\"Green Fingers\"",                             EP1VillainsMissionCFreePlay,278947,25)
+PROGRESSIONACHIEVEMENTS("Gangster Paradise",   "\"An Enterprising Theft\"",             EP1VillainsMissionDFreePlay,278948,26)
+PROGRESSIONACHIEVEMENTS("Blocked",   "\"Breaking Blocks\"",                             EP1VillainsMissionEFreePlay,278949,27)
 
 // Episode 2 (Villains) - Power Crazed Penguin
-PROGRESSIONACHIEVEMENTS("Docked Out",   "\"Rocking the Docks\"",                        EP2VillainsMissionFFreePlay,278950)
-PROGRESSIONACHIEVEMENTS("My Time to Shine!",   "\"Stealing the Show\"",                 EP2VillainsMissionGFreePlay,278951)
-PROGRESSIONACHIEVEMENTS("We are Vengeance",   "\"Harboring a Grudge\"",                 EP2VillainsMissionHFreePlay,278952)
-PROGRESSIONACHIEVEMENTS("Rescue Mission",   "\"A Daring Rescue\"",                      EP2VillainsMissionIFreePlay,278953)
-PROGRESSIONACHIEVEMENTS("Ice Cold",   "\"Arctic World\"",                               EP2VillainsMissionJFreePlay,278954)
+PROGRESSIONACHIEVEMENTS("Docked Out",   "\"Rocking the Docks\"",                        EP2VillainsMissionFFreePlay,278950,28)
+PROGRESSIONACHIEVEMENTS("My Time to Shine!",   "\"Stealing the Show\"",                 EP2VillainsMissionGFreePlay,278951,29)
+PROGRESSIONACHIEVEMENTS("We are Vengeance",   "\"Harboring a Grudge\"",                 EP2VillainsMissionHFreePlay,278952,30)
+PROGRESSIONACHIEVEMENTS("Rescue Mission",   "\"A Daring Rescue\"",                      EP2VillainsMissionIFreePlay,278953,31)
+PROGRESSIONACHIEVEMENTS("Ice Cold",   "\"Arctic World\"",                               EP2VillainsMissionJFreePlay,278954,32)
 
 // Episode 3 (Villains) - The Joker's Return
-PROGRESSIONACHIEVEMENTS("Surprise!",   "\"A Surprise for the Commissioner\"",           EP3VillainsMissionKFreePlay,278955)
-PROGRESSIONACHIEVEMENTS("Top Gun",   "\"Biplane Blast\"",                               EP3VillainsMissionLFreePlay,278956)
-PROGRESSIONACHIEVEMENTS("The Funniest Prank",   "\"The Joker's Masterpiece\"",          EP3VillainsMissionMFreePlay,278957)
-PROGRESSIONACHIEVEMENTS("Full Moon",   "\"The Lure of the Night\"",                     EP3VillainsMissionNFreePlay,278958)
-PROGRESSIONACHIEVEMENTS("You Got the Whole Squad Laughing",   "\"Dying of Laughter\"",  EP3VillainsMissionOFreePlay,278959)
+PROGRESSIONACHIEVEMENTS("Surprise!",   "\"A Surprise for the Commissioner\"",           EP3VillainsMissionKFreePlay,278955,33)
+PROGRESSIONACHIEVEMENTS("Top Gun",   "\"Biplane Blast\"",                               EP3VillainsMissionLFreePlay,278956,34)
+PROGRESSIONACHIEVEMENTS("The Funniest Prank",   "\"The Joker's Masterpiece\"",          EP3VillainsMissionMFreePlay,278957,35)
+PROGRESSIONACHIEVEMENTS("Full Moon",   "\"The Lure of the Night\"",                     EP3VillainsMissionNFreePlay,278958,36)
+PROGRESSIONACHIEVEMENTS("You Got the Whole Squad Laughing",   "\"Dying of Laughter\"",  EP3VillainsMissionOFreePlay,278959,37)
 
 
 // All Characters Functions
