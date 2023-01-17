@@ -491,7 +491,6 @@ Vehicle8 = 0x0061d484
 Vehicle9 = 0x0061d485
 Vehicle10 = 0x0061d488
 Vehicle11 = 0x0061d48a
-Vehicle12 = 0x0061d48f
 Vehicle13 = 0x0061d491
 Vehicle14 = 0x0061d492
 Vehicle15 = 0x0061d494
@@ -526,7 +525,6 @@ Vehicle8,
 Vehicle9,
 Vehicle10,
 Vehicle11,
-Vehicle12,
 Vehicle13,
 Vehicle14,
 Vehicle15,
@@ -617,12 +615,12 @@ PROGRESSIONACHIEVEMENTS("You Got the Whole Squad Laughing",   "\"Dying of Laught
 function AllCharacters(CharactersUnlocked)
 {
  return sum_of(CharactersUnlocked,f => bit0(f)) == length(CharactersUnlocked) &&
-        sum_of(CharactersUnlocked,f => prev(bit0(f))) == length(CharactersUnlocked) - 1
+        sum_of(CharactersUnlocked,f => prev(bit0(f)))<= length(CharactersUnlocked) - 1
 }
 function AllCharactersJP(CharactersUnlocked)
 {
  return sum_of(CharactersUnlocked,f => bit0(f+OFFSET)) == length(CharactersUnlocked) &&
-        sum_of(CharactersUnlocked,f => prev(bit0(f+OFFSET))) == length(CharactersUnlocked) - 1
+        sum_of(CharactersUnlocked,f => prev(bit0(f+OFFSET))) <= length(CharactersUnlocked) - 1
 }
 // All Characters Achievement
 function CHARACTERUNLOCKACHIEVEMENT()
@@ -665,12 +663,12 @@ achievement(
 function AllCanisters(Canisters)
 {
  return sum_of(Canisters,f => byte(f)) == length(Canisters)+270 &&
-        sum_of(Canisters,f => prev(byte(f))) == length(Canisters)+270 - 1
+        sum_of(Canisters,f => prev(byte(f))) <= length(Canisters)+270 - 1
 }
 function AllCanistersJP(Canisters)
 {
  return sum_of(Canisters,f => byte(f+OFFSET)) == length(Canisters)+270 &&
-        sum_of(Canisters,f => prev(byte(f+OFFSET))) == length(Canisters)+270 - 1
+        sum_of(Canisters,f => prev(byte(f+OFFSET))) <= length(Canisters)+270 - 1
 }
 //All Canisters Achievement
 achievement(
@@ -758,9 +756,9 @@ function AllVehicles(Vehicles)
 function AllVehiclesJP(Vehicles)
 {
  return sum_of(Vehicles,f => bit0(f+OFFSET)) == length(Vehicles) &&
-        sum_of(Vehicles,f => prev(bit0(f+OFFSET))) == length(Vehicles) - 1
+        sum_of(Vehicles,f => prev(bit0(f+OFFSET))) <= length(Vehicles) - 1
 }
-//All SuperHero Ranks Achievement
+//All Vehicles Achievement
 achievement(
     title="Is the Juice Mobile Available?",
     description="Unlock all vehicles!",

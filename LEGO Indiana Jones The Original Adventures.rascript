@@ -40,18 +40,18 @@ Level3=dword(0x00496568)!=3
 Level4=dword(0x00496568)!=4
 Level5=dword(0x00496568)!=5
 Level6=dword(0x00496568)!=6
-Level7=dword(0x00496568)!=7
-Level8=dword(0x00496568)!=8
-Level9=dword(0x00496568)!=9
-Level10=dword(0x00496568)!=10
-Level11=dword(0x00496568)!=11
-Level12=dword(0x00496568)!=12
-Level13=dword(0x00496568)!=13
-Level14=dword(0x00496568)!=14
-Level15=dword(0x00496568)!=15
-Level16=dword(0x00496568)!=16
-Level17=dword(0x00496568)!=17
-Level18=dword(0x00496568)!=18
+Level7=dword(0x00496568)!=8
+Level8=dword(0x00496568)!=9
+Level9=dword(0x00496568)!=10
+Level10=dword(0x00496568)!=11
+Level11=dword(0x00496568)!=12
+Level12=dword(0x00496568)!=13
+Level13=dword(0x00496568)!=15
+Level14=dword(0x00496568)!=16
+Level15=dword(0x00496568)!=17
+Level16=dword(0x00496568)!=18
+Level17=dword(0x00496568)!=19
+Level18=dword(0x00496568)!=20
 
 // Free Play Flags AKA what i'm gonna use for regular progression achievements
 // Variables
@@ -493,7 +493,7 @@ achievement(
     title="Master Cheater",
     description="Purchase every Extra in the game!",
     points=25,
-    trigger= SaveProtection && AllRedParcels(RedParcels)
+    trigger= SaveProtection && prev(Extras1 + Extras2 + Extras3 + Extras4)<=23 && measured(Extras1 + Extras2 + Extras3 + Extras4==24)
 )
 // All True Adventurer
 function AllTrueAdventurer(TrueAdventurer)
