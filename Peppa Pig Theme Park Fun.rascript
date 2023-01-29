@@ -109,6 +109,27 @@ achievement(
         save_protection() &&
         bit5(save_slot() * 0xa0  + base_flags) > prev(bit2(save_slot() * 0xa0  + base_flags))
 )
+// Mend the Map
+puzzle_winflag=dword(0x2b5dd4)
+puzzle_size=dword(0x22d2c4)
+puzzle_map=0x3036
+function yolepuzzle(title,description,points,size)
+{
+    achievement(
+        title=title,
+        description=description,
+        points=points,
+        trigger=
+        map_address() == puzzle_map &&
+        puzzle_size == size &&
+        prev(puzzle_winflag)==0 &&
+        puzzle_winflag==1
+        
+    )
+}
+yolepuzzle("Jig",  "Complete the 4 piece puzzle in Mend the Map",1,0)
+yolepuzzle("Saw","Complete the 6 piece puzzle in Mend the Map",3,1)
+yolepuzzle("Swag?",  "Complete the 9 piece puzzle in Mend the Map",5,2)
 
 screen_rp = {
     0x3031:"Let's Get Ready",
