@@ -10,7 +10,10 @@ PROFILE1P3=0x259612
 
 ACTIVESAVESLOT=0x22d254
 OFFSET=0xA0
-
+// Save Protection
+function save_slot() => dword(0x22d254)
+function save_protection() => prev(save_slot()) != 0xffffffff && save_slot() == prev(save_slot())
+// Store AddSource Chain
 function STOREADDSOURCECHAIN(deltacount,memcount)
 {
     return prev(bitcount(dword(ACTIVESAVESLOT)*OFFSET+PROFILE1P1))+
@@ -32,19 +35,19 @@ achievement(
     title="First Toy",
     description="Purchase your first item in the store!",
     points=2,
-    trigger= STOREADDSOURCECHAIN(0,1)
+    trigger= STOREADDSOURCECHAIN(0,1) && save_protection()
 )
 achievement(
     title="Just One More Mom!",
     description="Purchase 50% of the items in the store!",
     points=5,
-    trigger= STOREADDSOURCECHAIN(9,10)
+    trigger= STOREADDSOURCECHAIN(9,10) && save_protection()
 )
 achievement(
     title="You’ve Got a Friend in Me",
     description="Purchase all the items in the store!",
     points=10,
-    trigger= STOREADDSOURCECHAIN(19,20)
+    trigger= STOREADDSOURCECHAIN(19,20) && save_protection()
 )
 
 function save_slot() => dword(0x22d254)
