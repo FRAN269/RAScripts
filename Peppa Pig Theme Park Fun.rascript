@@ -49,3 +49,93 @@ achievement(
     points=10,
     trigger= STOREADDSOURCECHAIN(19,20) && save_protection()
 )
+
+function save_slot() => dword(0x22d254)
+function save_protection() => prev(save_slot()) != 0xffffffff && save_slot() == prev(save_slot())
+base_flags = 0x25960c
+
+achievement( //Let's Get Ready!
+    "Ready for the Day!",
+    "Complete Let's Get Ready!",
+    points=2,
+    trigger=
+        save_protection() &&
+        bit1(save_slot() * 0xa0  + base_flags) > prev(bit1(save_slot() * 0xa0  + base_flags))
+)
+achievement( //Prepare a Picnic!
+    "A Meal for Kings",
+    "Complete Prepare a Picnic!",
+    points=2,
+    trigger=
+        save_protection() &&
+        bit2(save_slot() * 0xa0  + base_flags) > prev(bit2(save_slot() * 0xa0  + base_flags))
+)
+//I spy Cheevos
+//Map String Address: 0x21d38d
+function map_address() => word_be(0x21d38d)
+function i_spy_mode() => dword((dword(0x1f8cd0) & 0x1ffffff)  + 0x1dc) 
+function i_spy_ticks() => dword((dword(0x1f8cd0) & 0x1ffffff)  + 0x174)
+i_spy_map = 0x3033 //"03"
+i_spy = 0x29
+letters = 0
+colors = 1
+achievement(
+    "Spying on Colors",
+    "Complete a game of I Spy with Colors!",
+    points=2,
+    trigger=
+        map_address() == i_spy_map &&
+        i_spy_mode() == colors &&
+        prev(i_spy_ticks()) == 9 &&
+        i_spy_ticks() == 10
+        
+)
+achievement(
+    "Spying on Letters",
+    "Complete a game of I Spy with Letters!",
+    points=2,
+    trigger=
+        map_address() == i_spy_map &&
+        i_spy_mode() == letters &&
+        prev(i_spy_ticks()) == 9 &&
+        i_spy_ticks() == 10
+)
+//Fix the Car
+achievement(
+    "Star Mechanic",
+    "Complete Fix the Car!",
+    points=2,
+    trigger=
+        save_protection() &&
+        bit5(save_slot() * 0xa0  + base_flags) > prev(bit2(save_slot() * 0xa0  + base_flags))
+)
+
+screen_rp = {
+    0x3031:"Let's Get Ready",
+    0x3032:"Prepare a Picnic",
+    0x3033:"I Spy",
+    0x3035:"Fix the Car!",
+    0x3036:"Mend the Map",
+    0x3038:"Train Ride",
+    0x3039:"Musical Water Fountain",
+    0x3131:"See-Saw",
+    0x3132:"Water Cannon",
+    0x3133:"Trampolines",
+    0x3134:"Tea Cup Ride",
+    0x3135:"Hot Air Balloon",
+    0x3136:"Bumper Cars",
+    0x3138:"Candy Floss",
+    0x3139:"Ice Cream",
+    0x3230:"Picnic",
+    0x3231:"Remote Controlled Cars",
+    0x3232:"Shop"
+    
+}
+rich_presence_display("{0}",
+    rich_presence_lookup("Map", map_address(), screen_rp, "In Menu...")
+)
+
+
+
+
+
