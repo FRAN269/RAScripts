@@ -110,17 +110,32 @@ achievement(
         bit5(save_slot() * 0xa0  + base_flags) > prev(bit2(save_slot() * 0xa0  + base_flags))
 )
 
+//See-Saw
+see_saw = 0x3131
+function see_saw_ticks() => dword((dword(0x1f8cd0) & 0x1ffffff)  + 0x1f8)
+function see_saw_timer() => float((dword(0x1f8cd0) & 0x1ffffff)  + 0x1fc)
+achievement(
+    "Weighing Our Options",
+    "Complete the See-saw game in Timed mode!",
+    points=5,
+    trigger=
+        map_address() == see_saw &&
+        see_saw_timer() != -1 &&
+        prev(see_saw_ticks()) == 9 &&
+        see_saw_ticks() == 10
+)
+
 screen_rp = {
-    0x3031:"Let's Get Ready",
-    0x3032:"Prepare a Picnic",
-    0x3033:"I Spy",
-    0x3035:"Fix the Car!",
-    0x3036:"Mend the Map",
-    0x3038:"Train Ride",
-    0x3039:"Musical Water Fountain",
-    0x3131:"See-Saw",
+    0x3031:"Let's Get Ready", //Done
+    0x3032:"Prepare a Picnic", //Done
+    0x3033:"I Spy", //Done
+    0x3035:"Fix the Car!", //Done
+    0x3036:"Mend the Map", //FRAN
+    0x3038:"Train Ride", //?
+    0x3039:"Musical Water Fountain", //FRAN
+    0x3131:"See-Saw", //Done
     0x3132:"Water Cannon",
-    0x3133:"Trampolines",
+    0x3133:"Trampolines", //FRAN
     0x3134:"Tea Cup Ride",
     0x3135:"Hot Air Balloon",
     0x3136:"Bumper Cars",
