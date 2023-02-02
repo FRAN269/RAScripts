@@ -131,6 +131,13 @@ yolepuzzle("Jig",  "Complete the 4 piece puzzle in Mend the Map",1,0)
 yolepuzzle("Saw","Complete the 6 piece puzzle in Mend the Map",3,1)
 yolepuzzle("Swag?",  "Complete the 9 piece puzzle in Mend the Map",5,2)
 
+function timed_cheevo(ticks, timer) => //Use for achievements when checking timed mode completion.
+        
+        timer != -1 &&
+        prev(ticks) == 9 &&
+        ticks == 10
+
+
 //See-Saw
 see_saw = 0x3131
 function see_saw_ticks() => dword((dword(0x1f8cd0) & 0x1ffffff)  + 0x1f8)
@@ -141,30 +148,77 @@ achievement(
     points=5,
     trigger=
         map_address() == see_saw &&
-        see_saw_timer() != -1 &&
-        prev(see_saw_ticks()) == 9 &&
-        see_saw_ticks() == 10
+        timed_cheevo(see_saw_timer(), see_saw_ticks())
 )
 
+//Bumper Cars
+bumper_car = 0x3136
+function bumper_car_ticks() => dword((dword(0x1f8cd0) & 0x1ffffff)  + 0x16c)
+function bumper_car_timer() => float((dword(0x1f8cd0) & 0x1ffffff)  + 0x17c)
+achievement(
+    "Bumpin' Pigs",
+    "Complete the Bumper Cars game in Timed mode!",
+    points=5,
+    trigger=
+        map_address() == bumper_car &&
+        timed_cheevo(bumper_car_ticks(), bumper_car_timer()) 
+               
+)
+//Ice Cream
+function ice_cream_ticks() => dword((dword(0x1f8cd0) & 0x1ffffff)  + 0x250)
+function ice_cream_timer() => float((dword(0x1f8cd0) & 0x1ffffff)  + 0x258)
+ice_cream = 0x3139
+achievement(
+    "Service With a Smile",
+    "Complete the Ice Cream game in Timed mode!",
+    points=5,
+    trigger=
+        map_address() == ice_cream &&
+        timed_cheevo(ice_cream_ticks(), ice_cream_timer())
+)
+//Tea Cup Ride
+tea_cup = 0x3134
+function tea_cup_ticks() => dword((dword(0x1f8cd0) & 0x1ffffff)  + 0x18c)
+achievement(
+    "A Twisty Ride!",
+    "Complete the Tea Cup Ride game!",
+    points=5,
+    trigger=
+        map_address() == tea_cup &&
+        prev(tea_cup_ticks()) == 9 &&
+        tea_cup_ticks() == 10
+)
+//Picnic
+picnic = 0x3230
+function picnic_ticks() => dword((dword(0x1f8cd0) & 0x1ffffff)  + 0x174)
+function picnic_timer() => float((dword(0x1f8cd0) & 0x1ffffff)  + 0x170)
+achievement(
+    "The Picnic of Ages",
+    "Complete the Picnic game in Timed mode!",
+    points=5,
+    trigger=
+        map_address() == picnic &&
+        timed_cheevo(picnic_ticks(), picnic_timer())
+)
 screen_rp = {
     0x3031:"Let's Get Ready", //Done
     0x3032:"Prepare a Picnic", //Done
     0x3033:"I Spy", //Done
     0x3035:"Fix the Car!", //Done
-    0x3036:"Mend the Map", //FRAN
+    0x3036:"Mend the Map", //FRAN - Done
     0x3038:"Train Ride", //?
-    0x3039:"Musical Water Fountain", //FRAN
+    0x3039:"Musical Water Fountain", //FRAN - Todo
     0x3131:"See-Saw", //Done
-    0x3132:"Water Cannon",
-    0x3133:"Trampolines", //FRAN
-    0x3134:"Tea Cup Ride",
+    0x3132:"Water Cannon", //FRAN - Todo
+    0x3133:"Trampolines", //FRAN - Todo
+    0x3134:"Tea Cup Ride", //Done
     0x3135:"Hot Air Balloon",
-    0x3136:"Bumper Cars",
-    0x3138:"Candy Floss",
-    0x3139:"Ice Cream",
-    0x3230:"Picnic",
+    0x3136:"Bumper Cars", //Done
+    0x3138:"Candy Floss", //FRAN
+    0x3139:"Ice Cream", //Done
+    0x3230:"Picnic", //Done
     0x3231:"Remote Controlled Cars",
-    0x3232:"Shop"
+    0x3232:"Shop" //Done - FRAN
     
 }
 rich_presence_display("{0}",
