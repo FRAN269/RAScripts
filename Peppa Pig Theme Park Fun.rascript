@@ -107,7 +107,7 @@ achievement(
     points=2,
     trigger=
         save_protection() &&
-        bit5(save_slot() * 0xa0  + base_flags) > prev(bit2(save_slot() * 0xa0  + base_flags))
+        bit5(save_slot() * 0xa0  + base_flags) > prev(bit5(save_slot() * 0xa0  + base_flags))
 )
 // Mend the Map
 puzzle_winflag=dword(0x2b5dd4)
@@ -232,7 +232,7 @@ function wc_achievements(title,description,points,pts)
         trigger=
         map_address()==wc &&
         prev(wc_points)<pts &&
-        wc_points==pts
+        wc_points>=pts
     )
 }
 wc_achievements("DuckDuckGo","Get a score of 50 in Water Cannon",5,50)
@@ -252,7 +252,7 @@ achievement(
 )
 // Candy Floss
 cf=0x3138
-function cf_ticks() => dword((dword(0x1f8cd0) & 0x1ffffff)  + 0x18c)
+function cf_ticks() => dword((dword(0x1f8cd0) & 0x1ffffff)  + 0x188)
 function cf_timer() => float((dword(0x1f8cd0) & 0x1ffffff)  + 0x170)
 achievement(
     "Flossing",

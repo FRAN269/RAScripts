@@ -44,7 +44,7 @@ scoreachievements("Billionaire",                     "Bill's",    1,28,2, "Class
 scoreachievements("My Mod Now",                      "Garry's",   5,30,2, "Classic")
 scoreachievements("Special Someone",                 "Fran's 60",10,60,2, "Classic")
 
-scoreachievements("Donkey Kong is Ballin'",          "Seth's",     1,102,2,"Progressive")
+scoreachievements("Donkey Kong is Ballin'",          "Seth's",     1,102,3,"Progressive")
 scoreachievements("Eldridge Special",                "Nathan's",   1,110,3,"Progressive")
 scoreachievements("Boss",                            "Kelsey's",   1,118,3,"Progressive")
 scoreachievements("Miner's Challenge",               "Steve's",    1,126,3,"Progressive")
